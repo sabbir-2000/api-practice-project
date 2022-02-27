@@ -1,9 +1,13 @@
 const buttonWarning = () => {
+    document.getElementById('players-div').innerHTML = '';
+    document.getElementById('spinner').style.display = 'block'
     const inputValue = document.getElementById('search-input').value;
     const url = `https://www.thesportsdb.com/api/v1/json/2/searchplayers.php?p=${inputValue}`
     fetch(url)
         .then(res => res.json())
         .then(data => playerDisplay(data.player))
+
+    document.getElementById('spinner').style.display = 'none';
 
 
 }
@@ -35,5 +39,31 @@ const playerDisplay = players => {
 }
 
 const details = (info) => {
-    console.log(info);
+    const url = `https://www.thesportsdb.com/api/v1/json/2/lookupplayer.php?id=${info}`
+    fetch(url)
+        .then(res => res.json())
+        .then(data => setObject(data.players[0]))
+
+}
+const setObject = information => {
+
+    if (information.strGender === "Male") {
+
+        document.getElementById('male').style.display = 'block';
+        document.getElementById('female').style.display = 'none';
+    }
+    else {
+        document.getElementById('male').style.display = 'none';
+        document.getElementById('female').style.display = 'block';
+    }
+    document.getElementById('objcet-detail').innerHTML = `
+    <div>
+    <img src=''/>
+
+    <h3>name:${information.strPlayer}</h3>
+    <h4>countryname:${information.strNationality}</h4>
+    
+    </div>
+    `;
+
 }
